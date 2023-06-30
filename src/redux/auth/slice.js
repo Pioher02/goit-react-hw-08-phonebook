@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {register, login} from "./operations";
 
-const initialState = {
+const authInitialState = {
   user: { name: null, email: null },
   token: null,
   isLoading: false,
@@ -20,7 +20,7 @@ const handleRejected = (state, action) => {
 
 export const authSlice = createSlice({
   name: 'auth',
-  initialState,
+  initialState: authInitialState,
   reducers: {
     setFormError(state, { payload }) {
       state.formError = payload;

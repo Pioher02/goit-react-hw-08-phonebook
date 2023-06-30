@@ -1,12 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
+import {register} from "./operations";
 
 const initialState = {
-  user: { userName: null, email: null },
+  user: { name: null, email: null },
   token: null,
   isLoading: false,
   isLoggedIn: false,
   error: null,
   formError: null,
+};
+
+const handlePending = state => {
+  state.isLoading = true;
+};
+const handleRejected = (state, action) => {
+  state.isLoading = false;
+  state.error = action.payload;
 };
 
 export const authSlice = createSlice({
@@ -22,10 +31,25 @@ export const authSlice = createSlice({
     clearError(state) {
       state.error = null;
     },
-    userLogout(state) {
-        state.user = { userName: null, email: null };
-        state.token = null;
-        state.isLoggedIn = false;
-      },
+    // userLogout(state) {
+    //   state.user = { name: null, email: null };
+    //   state.token = null;
+    //   state.isLoggedIn = false;
+    // },
+  },
+  extraReducers: {
+    [register.pending]: handlePending,
+    [register.rejected]: handleRejected,
+    [register.fulfilled](state, { payload }) {
+      const { name, email } = payload.user;
+      state.user = { name, email };
+      state.token = payload.accessToken;
+      state.isLoggedIn = true;
+      state.isLoading = false;
+      state.error = null;
+    },
   },
 });
+
+export const { clearError, clearFormError, setFormError } = authSlice.actions;
+export const authReducer = authSlice.reducer;

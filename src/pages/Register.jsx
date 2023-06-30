@@ -1,4 +1,45 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { register } from '../redux/auth/operations';
+import { clearError, clearFormError, setFormError } from '../redux/auth/slice';
+import { useEffect } from 'react';
+import Notiflix from 'notiflix';
+
 const Register = () => {
+  const dispatch = useDispatch();
+  const { formError, error } = useSelector(state => state.auth);
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    const { name, email, password } = e.target.elements;
+    const credentials = {
+      name: name.value,
+      email: email.value,
+      password: password.value,
+    };
+
+    if (name.value && email.value && password.value) {
+      dispatch(register(credentials));
+    } else {
+      dispatch(setFormError('Verify the provided info and try again.'));
+    }
+    const form = e.currentTarget;
+    form.reset();
+  };
+
+  useEffect(() => {
+    if (formError) {
+      Notiflix.Notify.failure(formError);
+      dispatch(clearFormError());
+    }
+  }, [dispatch, formError]);
+
+  useEffect(() => {
+    if (error) {
+      Notiflix.Notify.failure('Ups!! Something it´s wrong, try later');
+      dispatch(clearError());
+    } 
+  }, [dispatch, error]);
+
   return (
     <div
       style={{
@@ -12,7 +53,7 @@ const Register = () => {
       <h1>New User</h1>
 
       <form
-        // onSubmit={handleSubmit}
+        onSubmit={handleSubmit}
         style={{
           display: 'flex',
           flexDirection: 'column',
@@ -34,8 +75,8 @@ const Register = () => {
         <label
           style={{ display: 'flex', flexDirection: 'column', marginTop: 10 }}
         >
-          Password <i style={{ fontSize: 12 }}>(5 - 12 chars)</i>
-          <input type="password" name="password" pattern="\w{5,12}" />
+          Password <i style={{ fontSize: 12 }}>(mínimo 7 caracteres)</i>
+          <input type="password" name="password" pattern="\w{7,12}" />
         </label>
         <button
           type="submit"

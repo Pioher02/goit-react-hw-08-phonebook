@@ -35,7 +35,7 @@ const Register = () => {
 
   useEffect(() => {
     if (error) {
-      Notiflix.Notify.failure('Ups!! Something it´s wrong, try later');
+      Notiflix.Notify.failure(error);
       dispatch(clearError());
     } 
   }, [dispatch, error]);
@@ -63,7 +63,7 @@ const Register = () => {
           style={{ display: 'flex', flexDirection: 'column', marginTop: 10 }}
         >
           UserName
-          <input type="text" name="name" pattern="\w{5,12}" />
+          <input type="text" name="name"/>
         </label>
 
         <label
@@ -76,7 +76,7 @@ const Register = () => {
           style={{ display: 'flex', flexDirection: 'column', marginTop: 10 }}
         >
           Password <i style={{ fontSize: 12 }}>(mínimo 7 caracteres)</i>
-          <input type="password" name="password" pattern="\w{7,12}" />
+          <input type="password" name="password" pattern="\w{7,50}" />
         </label>
         <button
           type="submit"

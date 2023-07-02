@@ -1,54 +1,62 @@
-// import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
-// export const fetchContacts = createAsyncThunk(
-//   'contacts/fetchAll',
-//   async (_, thunkAPI) => {
-//     try {
-//       const data = await fetch(
-//         'https://6496330b83d4c69925a2ae66.mockapi.io/contacts/contacts/'
-//       );
-//       const response = await data.json();
-//       return response;
-//     } catch (e) {
-//       thunkAPI.rejectWithValue(e.message);
-//     }
-//   }
-// );
+const BASE_URL = 'https://connections-api.herokuapp.com/';
 
-// export const addContact = createAsyncThunk(
-//   'contacts/addContact',
-//   async (text, thunkAPI) => {
-//     try {
-//       const data = await fetch(
-//         'https://6496330b83d4c69925a2ae66.mockapi.io/contacts/contacts/',
-//         {
-//           method: 'POST',
-//           headers: { 'content-type': 'application/json' },
-//           body: JSON.stringify({ name: text.name, number: text.number }),
-//         }
-//       );
-//       const response = await data.json();
+export const fetchContacts = createAsyncThunk(
+  'contacts/fetchAll',
+  async (token, thunkAPI) => {
+    try {
+      const response = await fetch(`${BASE_URL}contacts`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      });
+      const data = await response.json();
+      return data;
+    } catch (e) {
+      thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);
 
-//       return response;
-//     } catch (e) {
-//       thunkAPI.rejectWithValue(e.message);
-//     }
-//   }
-// );
+export const addContact = createAsyncThunk(
+  'contacts/addContact',
+  async (text, thunkAPI) => {
+    try {
+      const data = await fetch(`${BASE_URL}contacts`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          Authorization: text.token,
+        },
 
-// export const deleteContact = createAsyncThunk(
-//   'contacts/deleteContact',
-//   async (id, thunkAPI) => {
-//     try {
-//       await fetch(
-//         `https://6496330b83d4c69925a2ae66.mockapi.io/contacts/contacts/${id}`,
-//         {
-//           method: 'DELETE',
-//         }
-//       );
-//       return id;
-//     } catch (e) {
-//       thunkAPI.rejectWithValue(e.message);
-//     }
-//   }
-// );
+        body: JSON.stringify({ name: text.name, number: text.number }),
+      });
+      const response = await data.json();
+
+      return response;
+    } catch (e) {
+      thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);
+
+export const deleteContact = createAsyncThunk(
+  'contacts/deleteContact',
+  async (text, thunkAPI) => {
+    try {
+      await fetch(`${BASE_URL}contacts/${text.id}`, {
+        method: 'DELETE',
+        headers: {
+          'content-type': 'application/json',
+          Authorization: text.token,
+        },
+      });
+      return text.id;
+    } catch (e) {
+      thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);

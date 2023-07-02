@@ -6,7 +6,7 @@ import Notiflix from 'notiflix';
 
 const Login = () => {
   const dispatch = useDispatch();
-  const { formError, error } = useSelector(state => state.auth);
+  const { formError, error, isLoading } = useSelector(state => state.auth);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -36,7 +36,7 @@ const Login = () => {
     if (error) {
       Notiflix.Notify.failure(error);
       dispatch(clearError());
-    } 
+    }
   }, [dispatch, error]);
 
   return (
@@ -78,8 +78,9 @@ const Login = () => {
             marginTop: 20,
             cursor: 'pointer',
           }}
+          disabled={isLoading}
         >
-          Login
+          {isLoading ? 'Loading...' : 'Login'}
         </button>
       </form>
     </div>

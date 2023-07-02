@@ -6,7 +6,7 @@ import Notiflix from 'notiflix';
 
 const Register = () => {
   const dispatch = useDispatch();
-  const { formError, error } = useSelector(state => state.auth);
+  const { formError, error, isLoading } = useSelector(state => state.auth);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -37,7 +37,7 @@ const Register = () => {
     if (error) {
       Notiflix.Notify.failure(error);
       dispatch(clearError());
-    } 
+    }
   }, [dispatch, error]);
 
   return (
@@ -63,7 +63,7 @@ const Register = () => {
           style={{ display: 'flex', flexDirection: 'column', marginTop: 10 }}
         >
           UserName
-          <input type="text" name="name"/>
+          <input type="text" name="name" />
         </label>
 
         <label
@@ -86,8 +86,9 @@ const Register = () => {
             marginTop: 20,
             cursor: 'pointer',
           }}
+          disabled={isLoading}
         >
-          Register
+          {isLoading ? 'Loading...' : 'Register'}
         </button>
       </form>
     </div>

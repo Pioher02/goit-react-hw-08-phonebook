@@ -43,13 +43,10 @@ export const authSlice = createSlice({
     [register.fulfilled](state, { payload }) {
       const { name, email } = payload.user;
       state.user = { name, email };
-      state.token = payload.accessToken;
+      state.token = payload.token;
       state.isLoggedIn = true;
       state.isLoading = false;
       state.error = null;
-      console.log(payload);
-      console.log(payload.user);
-      console.log(payload.token);
     },
     [login.pending]: handlePending,
     [login.rejected]: handleRejected,

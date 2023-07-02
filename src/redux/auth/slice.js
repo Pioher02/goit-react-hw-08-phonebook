@@ -31,11 +31,11 @@ export const authSlice = createSlice({
     clearError(state) {
       state.error = null;
     },
-    // userLogout(state) {
-    //   state.user = { name: null, email: null };
-    //   state.token = null;
-    //   state.isLoggedIn = false;
-    // },
+    userLogout(state) {
+      state.user = { name: null, email: null };
+      state.token = null;
+      state.isLoggedIn = false;
+    },
   },
   extraReducers: {
     [register.pending]: handlePending,
@@ -47,13 +47,16 @@ export const authSlice = createSlice({
       state.isLoggedIn = true;
       state.isLoading = false;
       state.error = null;
+      console.log(payload);
+      console.log(payload.user);
+      console.log(payload.token);
     },
     [login.pending]: handlePending,
     [login.rejected]: handleRejected,
     [login.fulfilled](state, { payload }) {
       const { name, email } = payload.user;
       state.user = { name, email };
-      state.token = payload.accessToken;
+      state.token = payload.token;
       state.isLoggedIn = true;
       state.isLoading = false;
       state.error = null;
@@ -61,5 +64,5 @@ export const authSlice = createSlice({
   },
 });
 
-export const { clearError, clearFormError, setFormError } = authSlice.actions;
+export const { clearError, clearFormError, setFormError, userLogout } = authSlice.actions;
 export const authReducer = authSlice.reducer;

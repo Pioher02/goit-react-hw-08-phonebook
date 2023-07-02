@@ -1,3 +1,24 @@
+const Contacts = () => {
+    return (
+      <div
+        style={{
+          height: '80vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+        }}
+      >
+        <h1>Contacts</h1>
+      </div>
+    );
+  };
+  
+  export default Contacts;
+
+
+
+
 // import ContactList from './ContactList';
 // import ContactForm from './ContactForm';
 // import Filter from './Filter';
